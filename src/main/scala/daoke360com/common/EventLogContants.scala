@@ -8,7 +8,7 @@ object EventLogContants {
   /**
     * 保存日志的表
     */
-  final val HBASE_EVENT_LOG_TABLE: String = "event_log"
+  final val HBASE_EVENT_LOG_TABLE: String = "kugou_log"
 
   /**
     * 列族
