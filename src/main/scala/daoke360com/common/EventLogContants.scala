@@ -1,4 +1,4 @@
-package daoke360com.common
+package test.haitaoGo.common
 
 /**
   * Created by 于汶洁 on 2018/5/3.
@@ -80,7 +80,7 @@ object EventLogContants {
   /**
     * 行为标识key
     */
-  final val BEHAVIOR_IDENTIFICATION_KEY = "behaviorKey"
+  final val USER_BEHAVIOR_KEY = "behaviorKey"
 
   /**
     * 用户行为数据
@@ -95,7 +95,7 @@ object EventLogContants {
   /**
     * 请求方式
     */
-  final val REQUEST_METHOD = "request_type"
+  final val REQUEST_TYPE = "request_type"
 
   /**
     * 主播id
@@ -110,7 +110,7 @@ object EventLogContants {
   /**
     * 用户行为标识
     */
-  final val USER_BEHAVIOR_IDENTIFICATION = "behavior"
+  final val USER_BEHAVIOR = "behavior"
 
 
 }
