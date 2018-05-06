@@ -14,7 +14,6 @@ import org.apache.spark.{SparkConf, SparkContext, SparkException}
 import test.haitaoGo.common.EventLogContants
 
 
-
 /**
   * Created by dell on 2018/5/4.
   */
@@ -110,8 +109,8 @@ object AnalysisLogTask {
 
 
     val sc = new SparkContext(sparkConf)
-
-
+    val a = 1
+    val accumulable = sc.accumulator(a)
     /**
       * 加载ip 规则库
       * 将ip 进行广播
@@ -134,16 +133,14 @@ object AnalysisLogTask {
       */
     val MapRdd = sc.textFile(sparkConf.get(GlobalContants.TASK_INPUT_PATH)).map(line => {
       LogAnalysisUtils.analysisLog(line, ipRules.value)
-    }).filter(map => map != null)
-
-
+    }).filter(map => map != null).sample(false, 0.0001)
 
 
     /**
       * 将map 数据保存进hbase
       */
-    val tupple= MapRdd.map(map => {
-
+    val tupple = MapRdd.map(map => {
+      accumulable.add(1)
       /**
         * 构建rowkey  时间戳  +  ip + 手机型号
         */
@@ -163,18 +160,19 @@ object AnalysisLogTask {
       val put = new Put(rowKey.getBytes())
 
 
-      map.foreach(t2=>{
+      map.foreach(t2 => {
 
-        put.addColumn(EventLogContants.HBASE_EVENT_LOG_TABLE_FAMILY.getBytes(),t2._1.getBytes(),t2._2.getBytes())
+        put.addColumn(EventLogContants.HBASE_EVENT_LOG_TABLE_FAMILY.getBytes(), t2._1.getBytes(), t2._2.getBytes())
 
       })
 
-      (new ImmutableBytesWritable(),put)
+      (new ImmutableBytesWritable(), put)
 
     })
 
     //将结果保存到hbase 中 create 'kugou_log',''
     tupple.saveAsHadoopDataset(jobConf)
+    println(accumulable.value)
     sc.stop()
 
   }

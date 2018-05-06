@@ -34,13 +34,11 @@ object LogAnalysisUtils {
       val str = requestBody.split("[=]")(1).split(" ")(0)
       if (Utils.validateBase64(str)) {
 
-
         val decoder = Base64.getUrlDecoder()
         val url = new String(decoder.decode(str))
 
         eventLogMap.put(EventLogContants.USER_BEHAVIOR, "bData")
         if (Utils.validateJson(url)) {
-
 
           val json = JSON.parseObject(url)
 
@@ -61,7 +59,6 @@ object LogAnalysisUtils {
 
           while (it.hasNext) {
 
-
             val kv = it.next().toString.split("[=]")
 
             eventLogMap.put(kv(0), kv(1))
@@ -73,7 +70,7 @@ object LogAnalysisUtils {
   }
 
   /**
-    *
+    *曲海涛  ip 归属地解析
     * @param eventLogMap
     * @param iprules
     * @return
@@ -108,7 +105,7 @@ object LogAnalysisUtils {
 
       val field = logText.split(GlobalContants.LOG_SPLIT_FLAG)
 
-      if (field.length == 8&&field(7).split("[;]").length==4) {
+      if (field.length == 8 &&field(7).split("[;]").length==4) {
 
         eventLogMap = new mutable.HashMap[String, String]()
 
